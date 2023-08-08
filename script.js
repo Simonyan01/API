@@ -1,66 +1,71 @@
 const url = "https://jsonplaceholder.typicode.com";
 const list = document.getElementById("list");
-const paginationContainer = document.createElement("div");
+const pagination = document.getElementById("pagination");
+const modal = document.getElementById("modal");
 
-const fetchData = async () => {
-  const res = await fetch(`${url}/photos?_page=4`);
-  const data = await res.json();
-  console.log(data);
-  return data;
+// const request = async (page) => {
+//   const res = await fetch(`${url}/photos?_page=${page}`);
+//   const data = await res.json();
+//   return data;
+// };
+
+const request = (page) => {
+  fetch(`${url}/photos?_page=${page}`)
+    .then((res) => res.json())
+    .then((data) => renderData(data));
 };
 
-fetchData().then((data) => {
-  renderData(data);
-  renderPagination();
-});
+request(1);
 
-function renderData(data) {
+const openModal = (src) => {
+  modal.innerHTML = "";
+  const img = document.createElement("img");
+  img.src = src;
+  modal.style.display = "flex";
+  modal.append(img);
+
+  img.onclick = (e) => e.stopPropagation();
+};
+
+modal.onclick = () => {
+  modal.style.display = "none";
+};
+
+const renderData = (data) => {
+  list.innerHTML = "";
   data.forEach((obj) => {
-    let parentBox = document.createElement("div");
+    const parentBox = document.createElement("div");
     parentBox.classList.add("parent");
+
     const image = document.createElement("img");
     image.classList.add("image");
+    image.src = obj.thumbnailUrl;
+
     const text = document.createElement("span");
     text.classList.add("text");
-
-    image.src = obj.thumbnailUrl;
     text.innerText = obj.title;
 
-    parentBox.onclick = () => {
-      parentBox.style.transition = "all .3s linear";
-      parentBox.style.transform = "scale(1.4)";
-      parentBox.style.boxShadow = "0 0 15px 25px rgba(0, 0, 0, 0.3)";
-      image.src = obj.url;
-      image.style.maxWidth = "150px";
-    };
-
-    parentBox.onmouseleave = () => {
-      parentBox.style.transition = "all .3s linear";
-      parentBox.style.transform = "scale(1.0)";
-      image.src = obj.thumbnailUrl;
-    };
+    image.onclick = () => openModal(obj.url);
 
     parentBox.append(image, text);
-    list.appendChild(parentBox);
+    list.append(parentBox);
   });
-}
+};
 
-function renderPagination() {
-  for (let i = 1; i <= 10; i++) {
-    const pagination = document.getElementById("pagination");
-    const pageLink = document.createElement("a");
-    pageLink.textContent = i;
-    pageLink.addEventListener("click", async () => {
-      const res = await fetch(`${url}/photos?_page=${i}`);
-      const data = await res.json();
-      console.log(data);
-      pageLink.href = data;
-      return data;
-    });
-    paginationContainer.appendChild(pageLink);
-    pagination.appendChild(paginationContainer);
-    document.body.appendChild(pagination);
+for (let i = 1; i <= 10; i++) {
+  const label = document.createElement("label");
+  const input = document.createElement("input");
+
+  if (i === 1) {
+    input.checked = true;
   }
+  input.type = "radio";
+  input.name = "pagination_item";
 
-  return paginationContainer;
+  const pageLink = document.createElement("div");
+  pageLink.onclick = () => request(i);
+
+  label.append(input, pageLink);
+  pageLink.innerText = i;
+  pagination.append(label);
 }

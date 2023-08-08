@@ -22,86 +22,79 @@ body {
 }
 
 .parent {
-  border: 2px solid black;
-  width: min(200px, 154px);
+  box-shadow: 0 0 20px 20px rgba(109, 108, 108, 0.8);
+  border: 3px solid black;
+  width: min(200px, 155px);
   text-align: center;
   border-radius: 10px;
-  box-shadow: 0 0 20px 20px rgba(109, 108, 108, 0.8);
-}
-
-.parent:nth-child(1) {
-  border: 4px solid #a7c272;
-}
-.parent:nth-child(2) {
-  border: 4px solid #c70a4d;
-}
-.parent:nth-child(3) {
-  border: 4px solid #501fe1;
-}
-.parent:nth-child(4) {
-  border: 4px solid #35185e;
-}
-.parent:nth-child(5) {
-  border: 4px solid #c96cad;
-}
-.parent:nth-child(6) {
-  border: 4px solid #4d564d;
-}
-.parent:nth-child(7) {
-  border: 4px solid #ea51da;
-}
-.parent:nth-child(8) {
-  border: 4px solid #4f5b8d;
-}
-.parent:nth-child(9) {
-  border: 4px solid #1e70a0;
-}
-.parent:nth-child(10) {
-  border: 4px solid #390b93;
+  transition: all 0.3s ease-in-out;
 }
 
 .parent:hover {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
-  box-shadow: 0 0 25px 45px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px 40px rgba(0, 0, 0, 0.3);
   transform: translateY(-5px);
 }
 
-.text {
+.parent > .text {
   word-wrap: break-word;
   -webkit-user-select: none;
   user-select: none;
 }
 
-.image {
-  display: flex;
+.parent > .image {
   margin: 0 auto;
   padding-bottom: 20px;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
 #pagination {
   border: 2px solid black;
   border-radius: 30px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   font-size: 25px;
-  margin: 50px;
+  position: relative;
+  top: 30px;
+  margin: 60px;
   padding: 10px 0;
+  gap: 20px;
 }
 
-#pagination a {
+#pagination div {
   text-decoration: none;
   transition: all 0.3s linear;
-  padding: 10px 40px;
-  border-radius: 15px;
+  padding: 10px 45px;
+  border-radius: 30px;
   display: inline-block;
   color: rgb(0, 0, 0);
   cursor: pointer;
 }
 
-#pagination a:hover {
-  border-radius: 30px;
+#pagination input {
+  display: none;
+}
+
+#pagination input:checked ~ div {
   background: #00000093;
+}
+
+#pagination div:hover {
+  border-radius: 20px;
+  background: #3d3c3c93;
   color: white;
+}
+
+#modal {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
 }
